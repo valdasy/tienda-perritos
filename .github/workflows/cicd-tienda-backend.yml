@@ -40,6 +40,6 @@ jobs:
               'docker pull ${{ secrets.ECR_REPO_URL_BACKEND }}:latest',
               'docker stop tienda-backend || true',
               'docker rm tienda-backend || true',
-              'docker run -d --name tienda-backend -p 3001:3001 -e DB_HOST=${{ secrets.EC2_DB_INSTANCE_ID }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_NAME=${{ secrets.DB_NAME }} --restart unless-stopped ${{ secrets.ECR_REPO_URL_BACKEND }}:latest'
+              'docker run -d --name tienda-backend -p 3001:3001 -e DB_HOST=${{ secrets.EC2_DB_INSTANCE_ID }} -e DB_USER=${{ secrets.DB_USER }} -e DB_PASSWORD=${{ secrets.DB_PASSWORD }} -e DB_NAME=${{ secrets.DB_NAME }} --restart always ${{ secrets.ECR_REPO_URL_BACKEND }}:latest'
             ]" \
             --region ${{ secrets.AWS_REGION }}

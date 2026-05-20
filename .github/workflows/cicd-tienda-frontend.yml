@@ -40,6 +40,6 @@ jobs:
               'docker pull ${{ secrets.ECR_REPO_URL_FRONTEND }}:latest',
               'docker stop tienda-frontend || true',
               'docker rm tienda-frontend || true',
-              'docker run -d --name tienda-frontend -p 80:80 --restart unless-stopped ${{ secrets.ECR_REPO_URL_FRONTEND }}:latest'
+              'docker run -d --name tienda-frontend -p 80:80 --restart always ${{ secrets.ECR_REPO_URL_FRONTEND }}:latest'
             ]" \
             --region ${{ secrets.AWS_REGION }}
