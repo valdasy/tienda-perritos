@@ -1,11 +1,11 @@
-name: CI/CD - Tienda Backend
+name: CI/CD - Tienda DB
 
 on:
   push:
     branches:
       - main
     paths:
-      - 'backend/**'
+      - 'db/**'
 
 jobs:
   build-and-deploy:
@@ -25,21 +25,21 @@ jobs:
       - name: Login a Amazon ECR
         uses: aws-actions/amazon-ecr-login@v1
 
-      - name: Build y Push imagen Backend
+      - name: Build y Push imagen DB
         run: |
-          docker build -t ${{ secrets.ECR_REPO_URL_BACKEND }}:latest ./backend
-          docker push ${{ secrets.ECR_REPO_URL_BACKEND }}:latest
+          docker build -t ${{ secrets.ECR_REPO_URL_DB }}:latest ./db
+          docker push ${{ secrets.ECR_REPO_URL_DB }}:latest
 
       - name: Desplegar en EC2 via SSM
         run: |
           aws ssm send-command \
-            --instance-ids ${{ secrets.EC2_BACKEND_INSTANCE_ID }} \
+            --instance-ids ${{ secrets.EC2_DB_INSTANCE_ID }} \
             --document-name "AWS-RunShellScript" \
             --parameters commands="[
               'aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_REGISTRY }}',
-              'docker pull ${{ secrets.ECR_REPO_URL_BACKEND }}:latest',
-              'docker stop tienda-backend || true',
-              'docker rm tienda-backend || true',
-              'docker run -d --name tienda-backend -p 3001:3001 -e DB_HOST=${{ secrets.EC2_DB_INSTANCE_ID }} -e DB_USER=root -e DB_PASSWORD=admin123 -e DB_NAME=tienda_perritos ${{ secrets.ECR_REPO_URL_BACKEND }}:latest'
+              'docker pull ${{ secrets.ECR_REPO_URL_DB }}:latest',
+              'docker stop tienda-db || true',
+              'docker rm tienda-db || true',
+              'docker run -d --name tienda-db -p 3306:3306 -v dbdata:/var/lib/mysql --restart unless-stopped ${{ secrets.ECR_REPO_URL_DB }}:latest'
             ]" \
             --region ${{ secrets.AWS_REGION }}
