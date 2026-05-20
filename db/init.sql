@@ -13,3 +13,4 @@ INSERT INTO productos (nombre, precio, descripcion) VALUES
   ('Pelota de goma', 2490, 'Juguete duradero para perros'),
   ('Cama para perro', 19990, 'Cama suave y cómoda talla M'),
   ('Snack dental', 3490, 'Ayuda a limpiar los dientes de tu perro');
+  ('Juguete de cuerda', 3490, 'Juguete interactivo para mascotas');

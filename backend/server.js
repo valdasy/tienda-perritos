@@ -22,7 +22,7 @@ db.connect((err) => {
 });
 
 app.get('/', (req, res) => {
-  res.json({ mensaje: 'Bienvenido a la Tienda Perritos - v1' });
+  res.json({ mensaje: 'Bienvenido a la Tienda Perritos - v2 actualizado!' });
 });
 
 app.get('/productos', (req, res) => {
